@@ -16,4 +16,8 @@
 
     <link rel="stylesheet" href="/css/styles.css">
 
+    <script src="/libs/jquery/jquery-3.6.0.min.js" defer></script>
+
+    <script src="/js/common.js" defer></script>
+
 </head>
