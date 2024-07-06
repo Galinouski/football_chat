@@ -13,8 +13,16 @@ require_once __DIR__ . "/header.php";
                     <input type="hidden" name="main" id="main" value="1">
                     <div class="form-group">
                         <textarea class="form-control" name="message" id="message" rows="5" required></textarea>
-                        <input type="file" class="form-control" id="exampleFormControlFile1" name="txtFile">
-                        <input type="file" class="form-control" id="exampleFormControlFile1" name="imageFile">
+                        <div class="row no-gutters justify-content-start">
+                            <div class="col-10">
+                                <input type="file" class="form-control" id="exampleFormControlFile1" name="txtFile">
+                                <input type="file" class="form-control" id="exampleFormControlFile1" name="imageFile">
+                            </div>
+                            <div class="col-2">
+                                <div class="form-control" style="height: 44px">txt</div>
+                                <div class="form-control" style="height: 44px">image</div>
+                            </div>
+                        </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Send</button>
                 </form>
@@ -24,6 +32,7 @@ require_once __DIR__ . "/header.php";
             <div class="col">
                 <img class="image" src="images/1.jpg">
             </div>
+
         </div>
     </div>
     <div class="container fluid">
@@ -49,7 +58,7 @@ require_once __DIR__ . "/header.php";
                         <div class='col-md-7'></div>
                         <div class='col'>
                             <select name="select_pages_show" class="form-control">
-                                <?php for ( $i = 5; $i<= 25; $i+=5 ) {
+                                <?php for ( $i = 5; $i<= MAX_PAGES_PER_PAGE; $i+=5 ) {
 
                                     if( $i == $_SESSION['pageShow'] ){
                                         echo "<option value='$i' selected>$i</option>";
@@ -81,6 +90,10 @@ require_once __DIR__ . "/header.php";
                 <div class="massages">
 
                     <?php
+
+                    //var_dump($chat_body); die;
+
+
                         $color = [
                             "alert alert-primary",
                             "alert alert-secondary",
@@ -91,16 +104,25 @@ require_once __DIR__ . "/header.php";
                             "alert alert-light",
                             "alert alert-dark"
                         ];
+
                         if(isset($chat_body)){
                             foreach ($chat_body as $user => $data) {
                                 $class = $color[rand(1,7)];
                                 echo "<div class='$class' role='alert' style='margin-bottom: 2px; padding: 2px; font-size: 16px'>
-                                            <div class='row no-gutters justify-content-start'>
-                                                <div class='col-8'>$data[message]</div>
-                                                <div class='col' style='font-size: 12px'>$data[username]</div>
-                                                <div class='col' style='font-size: 12px'>$data[email]</div>
-                                                <div class='col' style='font-size: 12px'>$data[date]</div>
-                                            </div>
+                                        <div class='row no-gutters justify-content-start'>
+                                                <div class='col-6'>$data[message] </div> ";
+
+                                if(isset($data['txt_file_upload_name'])) {
+                                echo "          <div class='col'><a href='download.php?path=downloads/$data[txt_file_upload_name]'>txt</a></div>";}
+                                else echo "     <div class='col'></div>";
+                                if(isset($data['image_file_upload_name'])) {
+                                echo "          <div class='col'><a href='download.php?path=downloads/$data[image_file_upload_name]'>img</a></div>";}
+                                else echo "     <div class='col'></div>";
+
+                                echo "          <div class='col-1' style='font-size: 12px'>$data[username]</div>
+                                                <div class='col-2' style='font-size: 12px'>$data[email]</div>
+                                                <div class='col-2' style='font-size: 12px'>$data[date]</div>
+                                        </div>
                                       </div>";
                             }
                         }

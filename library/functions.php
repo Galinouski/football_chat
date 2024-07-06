@@ -40,7 +40,7 @@ function user_registration( PDO $pdo, $username, $password, $email )
 
     $_SESSION['id'] = $pdo->lastInsertId();
 
-    $query_string = "CREATE TABLE IF NOT EXISTS messages (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `users_id` INT, `message` TEXT NULL, `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`), KEY `users_id` (`users_id`)) ENGINE = InnoDB ";
+    $query_string = "CREATE TABLE IF NOT EXISTS messages (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `users_id` INT, `message` TEXT NULL, `txt_file_upload_name` TEXT NULL, `image_file_upload_name` TEXT NULL, `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`), KEY `users_id` (`users_id`)) ENGINE = InnoDB ";
 
     $stmt = $pdo->prepare($query_string);
     if (!$stmt->execute()) {
@@ -68,14 +68,16 @@ function user_check( PDO $pdo, $username, $password )
     return true;
 }
 
-function add_users_message (PDO $pdo, $message, $id) {
+function add_users_message (PDO $pdo, $message, $id, $downloads_array) {
 
-    $sql = "INSERT INTO `messages` (`users_id`, `message` ) VALUES (:users_id, :message)";
+    $sql = "INSERT INTO `messages` (`users_id`, `message`, `txt_file_upload_name`, `image_file_upload_name` ) VALUES (:users_id, :message, :txt_file_upload_name, :image_file_upload_name)";
 
     // подготовленное SQL-выражение
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':users_id', $id);
     $stmt->bindParam(':message', $message);
+    $stmt->bindParam(':txt_file_upload_name', $downloads_array['txt_file']);
+    $stmt->bindParam(':image_file_upload_name', $downloads_array['image_file']);
 
     if (!$stmt->execute()) {
         return false;
@@ -111,17 +113,17 @@ function get_messages(PDO $pdo, $page, $select_pages_show,  $sort_array = []): a
 
         switch ($sort_array['sort_field']){
             case 'date' :
-                $sql = "SELECT messages.message, messages.date, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY messages.date $sort_type LIMIT $start_page, $end_page ";
+                $sql = "SELECT messages.message, messages.date, messages.txt_file_upload_name, messages.image_file_upload_name, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY messages.date $sort_type LIMIT $start_page, $end_page ";
                 break;
             case 'email' :
-                $sql = "SELECT messages.message, messages.date, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY users.email $sort_type LIMIT $start_page, $end_page ";
+                $sql = "SELECT messages.message, messages.date, messages.txt_file_upload_name, messages.image_file_upload_name, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY users.email $sort_type LIMIT $start_page, $end_page ";
                 break;
             case 'name' :
-                $sql = "SELECT messages.message, messages.date, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY users.username $sort_type LIMIT $start_page, $end_page ";
+                $sql = "SELECT messages.message, messages.date, messages.txt_file_upload_name, messages.image_file_upload_name, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY users.username $sort_type LIMIT $start_page, $end_page ";
                 break;
         }
     } else {
-        $sql ="SELECT messages.message, messages.date, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY messages.date DESC LIMIT $start_page, $end_page";
+        $sql ="SELECT messages.message, messages.date, messages.txt_file_upload_name, messages.image_file_upload_name, users.username, users.email FROM messages INNER JOIN users ON messages.users_id = users.id ORDER BY messages.date DESC LIMIT $start_page, $end_page";
     }
 
     //var_dump($sql); die;

@@ -16,6 +16,7 @@ if (empty($_REQUEST)) {
     session_start();
     // валидация введённых данных
     $errors = [];
+    $downloads_array = [];
     $context = [];
 
     if (!isset($_SESSION['pageShow'])){
@@ -72,25 +73,53 @@ if (empty($_REQUEST)) {
 
         $message = htmlspecialchars($_POST['message'], ENT_QUOTES);
 
-        if($_FILES['txtFile']['size'] > 100){
-            $errors [] = "sorry your text file is too large!";
-        };
-
         if ($_FILES['txtFile']['tmp_name']) {
             if (mime_content_type($_FILES['txtFile']['tmp_name']) == 'text/plain'){
                 $txtFileName = $_FILES['txtFile']['tmp_name'];
+
+                if($_FILES['txtFile']['size'] > 100000){
+                    $errors [] = "sorry your text file is too large!";
+                    $context = ['errors'=>$errors];
+                    render('main', $context);
+                    exit();
+                };
+
+                $fileStreamTxt = file_get_contents($_FILES['txtFile']['tmp_name']);
+
+                $txtFileName = 'downloads/'.$_FILES['txtFile']['name'];
+
+                $downloads_array ['txt_file'] = $_FILES['txtFile']['name'];
+
+                file_put_contents( $txtFileName, $fileStreamTxt);
+
             } else {
                 $errors[] = "only text files are allowed";
+                $context = ['errors'=>$errors];
+                render('main', $context);
+                exit();
             }
         }
 
         if ($_FILES['imageFile']['tmp_name']) {
             if (mime_content_type($_FILES['imageFile']['tmp_name']) == 'image/gif' || mime_content_type($_FILES['imageFile']['tmp_name']) == 'image/jpeg' || mime_content_type($_FILES['imageFile']['tmp_name']) == 'image/png') {
                 $imageFileName = $_FILES['imageFile']['tmp_name'];
+
                 $size = getimagesize($imageFileName);
                 if ($size[0] > 320 || $size[1] > 240) {
                     $errors[] = "too big image resolution!";
+                    $context = ['errors'=>$errors];
+                    render('main', $context);
+                    exit();
                 }
+
+                $fileStreamImg = file_get_contents($_FILES['imageFile']['tmp_name']);
+
+                $imgFileName = 'downloads/'.$_FILES['imageFile']['name'];
+
+                $downloads_array ['image_file'] = $_FILES['imageFile']['name'];
+
+                file_put_contents( $imgFileName, $fileStreamImg);
+
             } else {
                 $errors[] = "only (.jpg, .gif, .png) files are allowed.";
             }
@@ -100,7 +129,7 @@ if (empty($_REQUEST)) {
 
         $id = $_SESSION['id'];
 
-        if (!add_users_message ($pdo, $message, $id)) {
+        if (!add_users_message ($pdo, $message, $id, $downloads_array)) {
             $errors [] = "sorry your message could not be sent.";
         }
 
@@ -168,9 +197,10 @@ if (empty($_REQUEST)) {
     }
 
     $select_pages_show = $_SESSION['pageShow'];
-    $all_messages_count = count_messages($pdo);
 
     $chat_data = get_messages($pdo, $page, $select_pages_show, $sort_array);
+
+    $all_messages_count = count_messages($pdo);
 
     if (($all_messages_count / $select_pages_show) < 0) {
         $messages_pages_count = 1;
