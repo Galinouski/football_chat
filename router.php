@@ -1,6 +1,6 @@
 <?php
 
-global $pdo;
+global $pdo, $base_path;
 
 if (empty($_REQUEST)) {
     // Подключение шаблона
@@ -86,10 +86,11 @@ if (empty($_REQUEST)) {
 
                 $fileStreamTxt = file_get_contents($_FILES['txtFile']['tmp_name']);
 
-                $txtFileName = 'downloads/'.$_FILES['txtFile']['name'];
+                $txtFileName = $base_path .'downloads \\'.$_FILES['txtFile']['name'];
 
                 $downloads_array ['txt_file'] = $_FILES['txtFile']['name'];
 
+                //var_dump($txtFileName); die;
                 file_put_contents( $txtFileName, $fileStreamTxt);
 
             } else {
