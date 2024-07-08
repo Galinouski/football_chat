@@ -1,9 +1,6 @@
 <?php
 
-global $pdo, $base_path;
-
-$pdo = DB::getInstance();
-
+global $base_path;
 
 if (isset($_GET['authorisation']) == 'new') {
 
@@ -74,7 +71,7 @@ if (empty($_REQUEST)) {
         // функция проверки пользователя
 
 
-        if (!user_check($pdo, $userName, $password)) {
+        if (!user_check(DB::getInstance(), $userName, $password)) {
 
             $errors = "please check your username or password";
             $context = ['errors'=>$errors];
@@ -153,7 +150,7 @@ if (empty($_REQUEST)) {
 
         $id = $_SESSION['id'];
 
-        if (!add_users_message ($pdo, $message, $id, $downloads_array)) {
+        if (!add_users_message (DB::getInstance(), $message, $id, $downloads_array)) {
             $errors [] = "sorry your message could not be sent.";
         }
 
@@ -223,9 +220,9 @@ if (empty($_REQUEST)) {
 
     $select_pages_show = $_SESSION['pageShow'];
 
-    $chat_data = get_messages($pdo, $page, $select_pages_show, $sort_array);
+    $chat_data = get_messages(DB::getInstance(), $page, $select_pages_show, $sort_array);
 
-    $all_messages_count = count_messages($pdo);
+    $all_messages_count = count_messages(DB::getInstance());
 
     if (($all_messages_count / $select_pages_show) < 0) {
         $messages_pages_count = 1;
