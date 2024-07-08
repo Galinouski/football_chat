@@ -32,9 +32,9 @@ require_once __DIR__ . "/header.php";
             <div class="col">
                 <img class="image" src="images/1.jpg">
             </div>
-
         </div>
     </div>
+    <br>
     <div class="container fluid">
         <div class="row no-gutters justify-content-start">
             <div class="col">
