@@ -4,8 +4,10 @@ global $pdo, $base_path;
 
 if (isset($_GET['registration']) == 'new') {
 
-    unset($_REQUEST);
+    $_REQUEST = [];
     setcookie('registration', 1, time() - 3600, '/');
+    setcookie('authorisation', 1, time() - 3600, '/');
+    unset($_COOKIE["registration"]);
 
 }
 
