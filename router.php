@@ -2,13 +2,21 @@
 
 global $pdo, $base_path;
 
+if (isset($_GET['authorisation']) == 'new') {
+
+    setcookie('authorisation', 1, time() - 3600, '/');
+    unset($_COOKIE["authorisation"]);
+    render ('authorisation', []);
+    exit;
+}
+
 if (isset($_GET['registration']) == 'new') {
 
     $_REQUEST = [];
     setcookie('registration', 1, time() - 3600, '/');
-    setcookie('authorisation', 1, time() - 3600, '/');
     unset($_COOKIE["registration"]);
-
+    render ('registration', []);
+    exit;
 }
 
 if (empty($_REQUEST)) {
@@ -16,7 +24,7 @@ if (empty($_REQUEST)) {
 
     $context = [];
 
-    if (isset($_COOKIE['registration'])) {
+    if (isset($_COOKIE['registration']) || isset($_COOKIE['authorisation'])) {
         render ('authorisation', $context);
     }
     else render ('registration', $context);
