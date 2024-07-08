@@ -73,6 +73,10 @@ body {
     font-size: 15px;
 }
 
+.registration_link {
+    text-decoration: none;
+}
+
 .registration_link a {
     text-decoration: none;
     font-size: 18px;
