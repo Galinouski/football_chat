@@ -27,8 +27,9 @@ if(isset($_GET['path']) && str_contains($_GET['path'], 'downloads'))
     else{
         $errors [] = "The file you tried to download does not exist. ";
     }
+} else {
+    $errors [] = "This file does not exist.";
 }
-$errors [] = "This file does not exist.";
 
 if ($errors) {
 
