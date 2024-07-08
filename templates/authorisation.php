@@ -52,4 +52,13 @@ require_once __DIR__ . "/header.php";
             <div class="col"></div>
         </div>
     </div>
+    <div class="container fluid">
+        <div class="row no-gutters justify-content-start">
+            <div class="col"></div>
+            <div class="col-6">
+                <div class="registration_link"><a href='index.php?registration=1'>registration</a></div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
 </body>

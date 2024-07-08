@@ -130,6 +130,7 @@ require_once __DIR__ . "/header.php";
                 </div>
             </div>
         </div>
+        <br>
         <div class="row no-gutters justify-content-center">
             <div class="col"></div>
             <div class = "col">
