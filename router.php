@@ -2,6 +2,13 @@
 
 global $pdo, $base_path;
 
+if (isset($_GET['registration']) == 'new') {
+
+    unset($_REQUEST);
+    setcookie('registration', 1, time() - 3600, '/');
+
+}
+
 if (empty($_REQUEST)) {
     // Подключение шаблона
 
@@ -26,7 +33,6 @@ if (empty($_REQUEST)) {
     if(isset($_REQUEST['select_pages_show'])) {
         $_SESSION['pageShow'] = htmlspecialchars($_REQUEST['select_pages_show'], ENT_QUOTES);
     }
-
 
     if (isset($_POST['registration'])) {
 
