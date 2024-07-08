@@ -9,7 +9,18 @@ require_once __DIR__ . "/header.php";
         <div class="row no-gutters justify-content-start align-content-center" style="margin-top: 20% ">
             <div class="col"></div>
             <div class="col-8">
-                <h2 style="color: lawngreen">Футбольный чат</h2>
+
+                <div class="container fluid">
+                    <div class="row no-gutters justify-content-start">
+                        <div class="col-2"></div>
+                        <div class="col-6"><h2 style="color: lawngreen">Футбольный чат</h2></div>
+                        <div class="col-3">
+                            <div class="registration_link"><a href='index.php?registration=new'>registration check</a></div>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                </div>
+                <br>
                 <form method="post" enctype="multipart/form-data" action="<?= $_SERVER['PHP_SELF']; ?>">
                     <input type="hidden" name="authorisation" id="authorisation" value="1">
                     <div class="form-row align-items-center">
@@ -52,13 +63,5 @@ require_once __DIR__ . "/header.php";
             <div class="col"></div>
         </div>
     </div>
-    <div class="container fluid">
-        <div class="row no-gutters justify-content-start">
-            <div class="col"></div>
-            <div class="col-6">
-                <div class="registration_link"><a href='index.php?registration=1'>registration</a></div>
-            </div>
-            <div class="col"></div>
-        </div>
-    </div>
+
 </body>

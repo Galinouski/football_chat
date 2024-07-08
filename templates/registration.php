@@ -6,9 +6,20 @@ require_once __DIR__ . "/header.php";
 <body>
     <br>
     <div class="container fluid">
+
         <div class="row no-gutters justify-content-start" style="margin-top: 20% ">
+            <div class="col-1"></div>
+            <div class="col-7"><h2 style="color: lawngreen">Футбольный чат регистрация пользователя</h2></div>
+            <div class="col"></div>
+            <div class="col-3">
+                <div class="registration_link"><a href='index.php?authorisation=new'>authorisation</a></div>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <br>
+        <div class="row no-gutters justify-content-start">
             <div class="col">
-                <h2 style="color: lawngreen">Футбольный чат регистрация пользователя</h2>
                 <form method="post" enctype="multipart/form-data" action="<?= $_SERVER['PHP_SELF']; ?>">
                     <input type="hidden" name="registration" id="registration" value="1">
                     <div class="form-group">

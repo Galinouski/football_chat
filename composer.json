@@ -1,6 +1,7 @@
 {
     "require": {
       "ext-fileinfo": "*",
-      "ext-gd": "*"
+      "ext-gd": "*",
+      "ext-pdo": "*"
     }
 }

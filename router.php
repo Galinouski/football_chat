@@ -2,6 +2,9 @@
 
 global $pdo, $base_path;
 
+$pdo = DB::getInstance();
+
+
 if (isset($_GET['authorisation']) == 'new') {
 
     setcookie('authorisation', 1, time() - 3600, '/');
@@ -69,6 +72,8 @@ if (empty($_REQUEST)) {
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
 
         // функция проверки пользователя
+
+
         if (!user_check($pdo, $userName, $password)) {
 
             $errors = "please check your username or password";
