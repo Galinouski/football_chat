@@ -1,32 +1,39 @@
 <?php
-if(isset($_GET['path']))
+global $base_path;
+require_once $base_path . 'library\core.php';
+$errors = [];
+
+if(isset($_GET['path']) && str_contains($_GET['path'], 'downloads'))
 {
-    //Читать url
     $url = $_GET['path'];
-    //Очистить кэш
+    // clear cash
     clearstatcache();
 
-    //Проверяем, существует ли путь к файлу или нет
     if(file_exists($url)) {
 
-    //Определение информации заголовка
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="'.basename($url).'"');
         header('Content-Length: '. filesize($url));
         header('Pragma: public');
 
-    //Очистить выходной буфер системы
+        // clear buffer
         flush();
 
-    //Считаем размер файла
         readfile($url,true);
 
-    //Завершить работу со скриптом
         die();
     }
     else{
-        echo "Путь к файлу не существует. ";
+        $errors [] = "The file you tried to download does not exist. ";
     }
 }
-echo "Путь к файлу не определен.";
+$errors [] = "This file does not exist.";
+
+if ($errors) {
+
+    $errors [] = "<a href='index.php?path=error'>back</a>";
+    $context = ['errors'=>$errors];
+    render('main', $context);
+    exit();
+}

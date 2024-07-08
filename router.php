@@ -79,6 +79,7 @@ if (empty($_REQUEST)) {
 
                 if($_FILES['txtFile']['size'] > 100000){
                     $errors [] = "sorry your text file is too large!";
+                    $errors [] = "<a href='index.php?path=error'>back</a>";
                     $context = ['errors'=>$errors];
                     render('main', $context);
                     exit();
@@ -90,11 +91,11 @@ if (empty($_REQUEST)) {
 
                 $downloads_array ['txt_file'] = $_FILES['txtFile']['name'];
 
-                //var_dump($txtFileName); die;
                 file_put_contents( $txtFileName, $fileStreamTxt);
 
             } else {
                 $errors[] = "only text files are allowed";
+                $errors [] = "<a href='index.php?path=error'>back</a>";
                 $context = ['errors'=>$errors];
                 render('main', $context);
                 exit();
@@ -108,6 +109,7 @@ if (empty($_REQUEST)) {
                 $size = getimagesize($imageFileName);
                 if ($size[0] > 320 || $size[1] > 240) {
                     $errors[] = "too big image resolution!";
+                    $errors [] = "<a href='index.php?path=error'>back</a>";
                     $context = ['errors'=>$errors];
                     render('main', $context);
                     exit();
@@ -138,6 +140,7 @@ if (empty($_REQUEST)) {
 
     if ($errors) {
         $context = ['errors'=>$errors];
+        $errors [] = "<a href='index.php?path=error'>back</a>";
         render('main', $context);
         exit();
     }
