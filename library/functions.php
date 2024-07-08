@@ -1,22 +1,26 @@
 <?php
 
 /**
- * @param Spreadsheet $spreadsheet - Excel-книга с данными
- * @param string $fileName  - имя xls файла
+
  * @param PDO $pdo   - PDO-подключение к базе данных
- * @param string $table  - имя таблицы в базе данных
- * @param mixed $context  - массив с данными для шаблона
- * @param string $template  - имя шаблона
- * @param worksheet $activesheet  - активный лист документа в конкретный момент
- *
- * @throws \PhpOffice\PhpSpreadsheet\Exception
+ * @param string $username - имя пользователя чата
+ * @param string $password - пароль пользователя чата
+ * @param string $email - почта пользователя чата
+ * @param int $id - идетификатор текущего пользователя
+ * @param array $downloads_array - данные о приложениях к сообщению
+ * @param int $page - текущая страница таблицы сообщений
+ * @param int $select_pages_show - колличество сообщений на одной странице
+ * @param array $sort_array - настройки сортировки (какое поле, тип сортировки)
+
  */
 
 function user_registration( PDO $pdo, $username, $password, $email )
 {
 
     $ip = $_SERVER['REMOTE_ADDR'];
-    $browser = $_SERVER['HTTP_USER_AGENT'];
+    $browser = get_browser_name($_SERVER['HTTP_USER_AGENT']);
+
+    //debug($browser, 1);
 
     $query_string = "CREATE TABLE IF NOT EXISTS users (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `username` TEXT NULL , `password` TEXT NULL , `email` TEXT NULL, `ip` TEXT NULL, `browser` TEXT NULL, PRIMARY KEY (`id`) ) ENGINE = InnoDB ";
 
@@ -103,7 +107,7 @@ function count_messages(PDO $pdo): int
 
 function get_messages(PDO $pdo, $page, $select_pages_show,  $sort_array = []): array
 {
-    //var_dump($_SESSION); die;
+
     $start_page = $page * $select_pages_show - $select_pages_show;
     $end_page = $select_pages_show;
 
@@ -138,4 +142,26 @@ function get_messages(PDO $pdo, $page, $select_pages_show,  $sort_array = []): a
     };
 
     return $sqlResultArray;
+}
+
+// получение кокретной информации о браузере пользователя
+function get_browser_name($user_agent)
+{
+    if (strpos($user_agent, 'Opera') || strpos($user_agent, 'OPR/')) return 'Opera';
+    elseif (strpos($user_agent, 'Edge')) return 'Edge';
+    elseif (strpos($user_agent, 'Chrome')) return 'Chrome';
+    elseif (strpos($user_agent, 'Safari')) return 'Safari';
+    elseif (strpos($user_agent, 'Firefox')) return 'Firefox';
+    elseif (strpos($user_agent, 'MSIE') || strpos($user_agent, 'Trident/7')) return 'Internet Explorer';
+
+    return 'Other';
+}
+
+// функция отладки
+function debug($data, $die = false)
+{
+    echo "<pre>" . print_r($data, 1) . "</pre>";
+    if ($die) {
+        die;
+    }
 }
