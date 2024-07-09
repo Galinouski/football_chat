@@ -3,6 +3,7 @@
 global $base_path;
 
 use classes\DB;
+use classes\message;
 use classes\User;
 
 if (isset($_GET['authorisation']) == 'new') {
@@ -73,10 +74,8 @@ if (empty($_REQUEST)) {
         $userName = htmlspecialchars($_POST['userName'], ENT_QUOTES);
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
 
-        $user = new User($userName, $password, '');
-
         // функция проверки пользователя
-        if (! $user::check(DB::getInstance(), $userName, $password)) {
+        if (! user::check(DB::getInstance(), $userName, $password)) {
 
             $errors = "please check your username or password";
             $context = ['errors'=>$errors];
@@ -153,9 +152,11 @@ if (empty($_REQUEST)) {
 
         // функция добавления сообщений и файлов в бд
 
-        $id = $_SESSION['id'];
+        $users_id = $_SESSION['id'];
 
-        if (!add_users_message (DB::getInstance(), $message, $id, $downloads_array)) {
+        $message = new message($message, $users_id, $downloads_array);
+
+        if (! $message->add_message(DB::getInstance())) {
             $errors [] = "sorry your message could not be sent.";
         }
 
@@ -227,7 +228,7 @@ if (empty($_REQUEST)) {
 
     $chat_data = get_messages(DB::getInstance(), $page, $select_pages_show, $sort_array);
 
-    $all_messages_count = count_messages(DB::getInstance());
+    $all_messages_count = message::count_messages(DB::getInstance());
 
     if (($all_messages_count / $select_pages_show) < 0) {
         $messages_pages_count = 1;
