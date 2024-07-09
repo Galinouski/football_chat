@@ -3,7 +3,7 @@
 global $base_path;
 
 use classes\DB;
-use classes\message;
+use classes\Message;
 use classes\User;
 
 if (isset($_GET['authorisation']) == 'new') {
@@ -75,7 +75,7 @@ if (empty($_REQUEST)) {
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
 
         // функция проверки пользователя
-        if (! user::check(DB::getInstance(), $userName, $password)) {
+        if (! User::check(DB::getInstance(), $userName, $password)) {
 
             $errors = "please check your username or password";
             $context = ['errors'=>$errors];
@@ -154,7 +154,7 @@ if (empty($_REQUEST)) {
 
         $users_id = $_SESSION['id'];
 
-        $message = new message($message, $users_id, $downloads_array);
+        $message = new Message($message, $users_id, $downloads_array);
 
         if (! $message->add_message(DB::getInstance())) {
             $errors [] = "sorry your message could not be sent.";
@@ -228,7 +228,7 @@ if (empty($_REQUEST)) {
 
     $chat_data = get_messages(DB::getInstance(), $page, $select_pages_show, $sort_array);
 
-    $all_messages_count = message::count_messages(DB::getInstance());
+    $all_messages_count = Message::count_messages(DB::getInstance());
 
     if (($all_messages_count / $select_pages_show) < 0) {
         $messages_pages_count = 1;
