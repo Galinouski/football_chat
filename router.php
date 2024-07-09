@@ -51,7 +51,7 @@ if (empty($_REQUEST)) {
         $email = htmlspecialchars($_POST['email'], ENT_QUOTES);
 
         // функция сохранения в базу данных о пользователе
-        if (!user_registration($pdo, $userName, $password, $email)) {
+        if (!user_registration(DB::getInstance(), $userName, $password, $email)) {
 
             $errors = "registration failed";
             $context = ['errors'=>$errors];
