@@ -3,6 +3,7 @@
 global $base_path;
 
 use classes\DB;
+use classes\User;
 
 if (isset($_GET['authorisation']) == 'new') {
 
@@ -52,8 +53,10 @@ if (empty($_REQUEST)) {
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
         $email = htmlspecialchars($_POST['email'], ENT_QUOTES);
 
+        $user = new User($userName, $password, $email);
+
         // функция сохранения в базу данных о пользователе
-        if (!user_registration(DB::getInstance(), $userName, $password, $email)) {
+        if (!$user->registration(DB::getInstance())) {
 
             $errors = "registration failed";
             $context = ['errors'=>$errors];
@@ -70,10 +73,10 @@ if (empty($_REQUEST)) {
         $userName = htmlspecialchars($_POST['userName'], ENT_QUOTES);
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES);
 
+        $user = new User($userName, $password, '');
+
         // функция проверки пользователя
-
-
-        if (!user_check(DB::getInstance(), $userName, $password)) {
+        if (! $user::check(DB::getInstance(), $userName, $password)) {
 
             $errors = "please check your username or password";
             $context = ['errors'=>$errors];
