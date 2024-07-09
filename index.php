@@ -7,11 +7,7 @@ $base_path = __DIR__ . '\\';
 require_once $base_path . 'configs\config.php';
 
 //автозагрузка классов
-
 require_once __DIR__ . '/vendor/autoload.php';
-
-require_once $base_path . 'classes\db.php';
-
 
 require_once $base_path . 'library\functions.php';
 require_once $base_path . 'library\core.php';
