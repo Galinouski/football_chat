@@ -1,7 +1,5 @@
-<?php
-header("Content-type: text/html; charset=utf-8");
-require_once __DIR__ . "/header.php";
-?>
+
+<?php require_once __DIR__ . "/header.php"; ?>
 
 <body>
 <br>
