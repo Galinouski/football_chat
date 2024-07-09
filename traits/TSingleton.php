@@ -1,5 +1,7 @@
 <?php
 
+namespace traits;
+
 class TSingleton
 {
     private static $instance;

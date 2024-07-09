@@ -1,5 +1,9 @@
 <?php
 
+namespace classes;
+
+use PDO;
+
 class DB
 {
     // Переменная, хранящая объект PDO

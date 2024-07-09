@@ -2,6 +2,8 @@
 
 global $base_path;
 
+use classes\DB;
+
 if (isset($_GET['authorisation']) == 'new') {
 
     setcookie('authorisation', 1, time() - 3600, '/');

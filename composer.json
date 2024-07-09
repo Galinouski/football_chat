@@ -1,7 +1,10 @@
 {
-    "require": {
-      "ext-fileinfo": "*",
-      "ext-gd": "*",
-      "ext-pdo": "*"
-    }
+      "require": {
+        "ext-pdo": "*"
+      },
+      "autoload": {
+        "psr-4": {
+          "classes\\": "classes"
+        }
+      }
 }
